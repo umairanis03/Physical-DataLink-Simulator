@@ -3,8 +3,9 @@ import sys
 import traceback
 from threading import Thread
 from pLayer import  physicalLayer
-
+from dLayer import dataLinkLayer
 obj=physicalLayer()
+ob=dataLinkLayer()
 
 def main():
     start_server()
@@ -79,12 +80,12 @@ def receive_input(connection, max_buffer_size):
 
 def process_input(input_str):
     print("Processing the input received from client")
-
+    ob.CRCchecker(input_str)
     res=""
 
     i=0
     #print(len(input_str))
-    while(i<len(input_str)):
+    while(i<len(input_str)-3):
         temp=input_str[i:i+7]
         a = int(temp, 2)
         res += str(chr(a))

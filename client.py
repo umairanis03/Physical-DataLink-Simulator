@@ -1,7 +1,9 @@
 import socket
 import sys
 from pLayer import physicalLayer
-
+ob=physicalLayer()
+from dLayer import dataLinkLayer
+dobj=dataLinkLayer()
 def main():
     #k=physicalModule.physicalLayer()
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,7 +30,9 @@ def main():
             res+=temp
         message = res
 
+        message = dobj.CRCmaker(message)
         message = obj.Encode(message)
+
         #print(message)
         soc.sendall(message.encode(encoding='UTF-8',errors='strict'))
 
@@ -37,6 +41,12 @@ def main():
             pass        # null operation
 
         message = input(" -> ")
+        #print("Send through error!! (Input Y) ")
+        check = input("Send through error!! (Input Y) ")
+        if(check=="Y"):
+            print("ander")
+            message=ob.errorMaker(message)
+
 
 
 

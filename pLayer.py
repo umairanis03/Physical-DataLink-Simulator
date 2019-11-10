@@ -1,3 +1,4 @@
+import random
 class physicalLayer:
     def Encode(self, bitSequence):
         size = len(bitSequence)
@@ -34,6 +35,20 @@ class physicalLayer:
                 output += '1'
 
         return output
+
+    def errorMaker(self,bitsequence):
+        newSeq=""
+        length=len(bitsequence)
+        k=random.randint(2,length)
+        print(k)
+        for i in range (0,k):
+            if(bitsequence[i]=='0'):
+                newSeq+='1'
+            else:
+                newSeq+='0'
+        for i in range(k,length):
+            newSeq+=bitsequence[i]
+        return newSeq
 
 
 
