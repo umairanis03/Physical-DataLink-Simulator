@@ -34,5 +34,11 @@ class dataLinkLayer:
 
         return output
 
-obj=dataLinkLayer()
+#obj=dataLinkLayer()
 
+
+#xxzyxyzxzyxzyxzxyyyyzxzyxyyzxzxyyzyxyyyyyzxyyyyzxzyxzxyzxyzyyxzxzyyxz
+
+#xxzyxyzxzyxzyxzxyyyyzxzyxyyzxzxyyzyxyyyyyzxyyyyzxzyxzxyzxyzyyxzxzyyxz
+
+print(format(ord(' '),'b'))

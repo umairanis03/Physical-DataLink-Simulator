@@ -2,7 +2,9 @@ import socket
 import sys
 import traceback
 from threading import Thread
+from pLayer import  physicalLayer
 
+obj=physicalLayer()
 
 def main():
     start_server()
@@ -28,7 +30,7 @@ def start_server():
 
     # infinite loop- do not reset for every requests
     while True:
-        print ('here')
+        #print ('here')
         connection, address = soc.accept()
         #print ('hey')
         ip, port = str(address[0]), str(address[1])
@@ -56,7 +58,7 @@ def client_thread(connection, ip, port, max_buffer_size = 5120):
             is_active = False
         else:
             print("Processed result: {}".format(client_input))
-            connection.sendall("-".encode("utf8"))
+            connection.sendall("-".encode("UTF-8"))
 
 
 def receive_input(connection, max_buffer_size):
@@ -66,7 +68,10 @@ def receive_input(connection, max_buffer_size):
     if client_input_size > max_buffer_size:
         print("The input size is greater than expected {}".format(client_input_size))
 
-    decoded_input = client_input.decode("utf8").rstrip()  # decode and strip end of line
+    decoded_input = client_input.decode("UTF-8").rstrip() # decode and strip end of line
+    #print(decoded_input + "$$$$$$$$$")
+    decoded_input = obj.Decode(decoded_input)
+
     result = process_input(decoded_input)
 
     return result
@@ -75,7 +80,17 @@ def receive_input(connection, max_buffer_size):
 def process_input(input_str):
     print("Processing the input received from client")
 
-    return "Hello " + str(input_str).upper()
+    res=""
+
+    i=0
+    #print(len(input_str))
+    while(i<len(input_str)):
+        temp=input_str[i:i+7]
+        a = int(temp, 2)
+        res += str(chr(a))
+        i += 7
+
+    return "Message from client:  " + str(res)
 
 if __name__ == "__main__":
     main()

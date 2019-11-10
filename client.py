@@ -1,7 +1,9 @@
 import socket
 import sys
+from pLayer import physicalLayer
 
 def main():
+    #k=physicalModule.physicalLayer()
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     host = "127.0.0.1"
     port = 8080
@@ -14,15 +16,34 @@ def main():
 
     print("Enter 'quit' to exit")
     message = input(" -> ")
-
+    obj = physicalLayer()
     while message != 'quit':
-        soc.sendall(message.encode("utf8"))
-        if soc.recv(5120).decode("utf8") == "-":
+        #message = ''.join(format(ord(i), 'b') for i in message)
+        res=""
+        for i in message:
+            temp=format(ord(i),'b')
+            if(len(temp)<7):
+
+                temp = "0"+temp
+            res+=temp
+        message = res
+
+        message = obj.Encode(message)
+        #print(message)
+        soc.sendall(message.encode(encoding='UTF-8',errors='strict'))
+
+        #soc.sendall(message.encode('UTF-8'))
+        if soc.recv(5120).decode('UTF-8') == "-":
             pass        # null operation
 
         message = input(" -> ")
 
+
+
+
+
     soc.send(b'--quit--')
+
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 class physicalLayer:
-    def encode(self, bitSequence, size):
-
+    def Encode(self, bitSequence):
+        size = len(bitSequence)
         output=""
         last='z'
         for i in range(0,size):
@@ -22,8 +22,9 @@ class physicalLayer:
 
         return output
 
-    def decode(self, bitsequence, size):
+    def Decode(self, bitsequence):
         output=""
+        size =len(bitsequence)
 
 
         for i in range(0,size):
@@ -37,7 +38,3 @@ class physicalLayer:
 
 
 
-obj =physicalLayer()
-print(obj.encode("01001",5))
-
-print(obj.decode("yxyyz",5))
