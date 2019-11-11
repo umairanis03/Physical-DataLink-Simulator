@@ -1,20 +1,45 @@
 from pLayer import physicalLayer
 ob=physicalLayer()
-def reverse(string):
-    string = "".join(reversed(string))
-    return string
 
-def int_to_bin_string(i):
-    if i == 0:
-        return "0"
-    s = ''
-    while i:
-        if i & 1 == 1:
-            s = "1" + s
+def xor(a, b):
+    res = ""
+
+    for i in range(1, len(b)):
+        if a[i] == b[i]:
+            res+='0'
         else:
-            s = "0" + s
-        i //= 2
-    return s
+            res+='1'
+
+    return res
+
+def mod2div(bitsequence, divisor):
+    pick = len(divisor)
+
+
+    tmp = bitsequence[0: pick]
+
+    while pick < len(bitsequence):
+
+        if tmp[0] == '1':
+
+
+            tmp = xor(divisor, tmp) + bitsequence[pick]
+
+        else:
+            tmp = xor('0' * pick, tmp) + bitsequence[pick]
+
+        pick += 1
+
+
+    if tmp[0] == '1':
+        tmp = xor(divisor, tmp)
+    else:
+        tmp = xor('0' * pick, tmp)
+
+    checkword = tmp
+    return checkword
+
+
 class dataLinkLayer:
 
 
@@ -42,7 +67,7 @@ class dataLinkLayer:
         output=""
         l=len(frame)
         while(i<l-4):
-            if i+3<=l-1 and frame[i]=='1' and frame[i+1]=='1' and frame[i+2]=='1' and frame[i+3]=='1':
+            if i+3<=l-5 and frame[i]=='1' and frame[i+1]=='1' and frame[i+2]=='1' and frame[i+3]=='1':
 
                 output+="1111"
                 i=i+5
@@ -53,60 +78,28 @@ class dataLinkLayer:
         return output
 
     def CRCmaker(self, bitsequence):
-        k=len(bitsequence)
         divisor = "1011"
-        newSeq=""
-        newSeq=bitsequence
-        for i in range(0, len(divisor)-1):
-            newSeq += "0"
+        divlen = len(divisor)
 
-        a=int(divisor,2)
-        b=int(newSeq,2)
-        c=b%a
-        c=c+b
-        s = ''
-        if c == 0:
-            s = "0"
+        newSeq = bitsequence + '0' * (divlen - 1)
+        rem = mod2div(newSeq, divisor)
 
-        while c:
-            if c & 1 == 1:
-                s = "1" + s
-            else:
-                s = "0" + s
-            c //= 2
 
-        # print(bitsequence)
-        # print(newSeq)
-        # print(s)
-        # print(len(divisor)-len(s))
-        # while len(s)<len(divisor)-1:
-        #     s='0'+s
-        #
-        # #x = reverse(x)
-        # bitsequence+=s
-        # print(bitsequence)
-        return  s
+        codeword = bitsequence + rem
+        return codeword
 
 
     def CRCchecker(self,bitsequence):
         divisor = "1011"
-        a=int(divisor,2)
-        b=int(bitsequence,2)
-        if(b%2):
-            print('Error detected!!')
+        divlen = len(divisor)
+
+        # Appends n-1 zeroes at end of data
+        newSeq = bitsequence + '0' * (divlen - 1)
+        rem = mod2div(newSeq, divisor)
+
+        a = int(rem,2)
+        if a==0:
+            print("NO ERROR")
         else:
-            print('No error')
+            print("ERROR DETECTED")
 
-
-
-
-
-
-
-# obj=dataLinkLayer()
-# f=ob.errorMaker("0111101")
-# print(f)
-# t=obj.CRCmaker(f)
-# print(t)
-#
-# obj.CRCchecker(t)

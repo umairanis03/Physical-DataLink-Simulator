@@ -13,7 +13,7 @@ def main():
 
 def start_server():
     host = "127.0.0.1"
-    port = 8080        # arbitrary non-privileged port
+    port = 8081        # arbitrary non-privileged port
 
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)   # SO_REUSEADDR flag tells the kernel to reuse a local socket in TIME_WAIT state, without waiting for its natural timeout to expire
@@ -70,9 +70,8 @@ def receive_input(connection, max_buffer_size):
         print("The input size is greater than expected {}".format(client_input_size))
 
     decoded_input = client_input.decode("UTF-8").rstrip() # decode and strip end of line
-    #print(decoded_input + "$$$$$$$$$")
     decoded_input = obj.Decode(decoded_input)
-
+    decoded_input = ob.deframing(decoded_input)
     result = process_input(decoded_input)
 
     return result
@@ -84,12 +83,12 @@ def process_input(input_str):
     res=""
 
     i=0
-    #print(len(input_str))
     while(i<len(input_str)-3):
         temp=input_str[i:i+7]
         a = int(temp, 2)
         res += str(chr(a))
         i += 7
+
 
     return "Message from client:  " + str(res)
 

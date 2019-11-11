@@ -37,19 +37,18 @@ class physicalLayer:
         return output
 
     def errorMaker(self,bitsequence):
-        newSeq=""
+        newSeq=list(bitsequence)
         length=len(bitsequence)
-        k=random.randint(2,length)
-        print(k)
-        for i in range (0,k):
-            if(bitsequence[i]=='0'):
-                newSeq+='1'
-            else:
-                newSeq+='0'
-        for i in range(k,length):
-            newSeq+=bitsequence[i]
-        return newSeq
+        k=random.randint(1,length)
+        times = max(random.randint(0,length//k),1)
+        for i in range(times):
+            global yt
+            if(length>0):
+                yt = random.randint(0,length)
+                if(bitsequence[yt]=='0'):
+                    newSeq[yt]='1'
+                else:
+                    newSeq[yt]='0'
 
-
-
-
+        newstr = "".join(newSeq)
+        return newstr
